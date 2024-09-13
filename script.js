@@ -12,33 +12,35 @@
         {id: 10, title: "에피소드 10", videoId: "IAmpmai_3yY"},
     ];
 
-    function loadEpisodes() {
-        const grid = document.getElementById('episode-grid');
-        grid.innerHTML = ''; // 기존 내용을 초기화합니다.
-        episodes.forEach(ep => {
-            const item = document.createElement('div');
-            item.className = "episode-item";
-            if (ep.id > 5) {
-                item.classList.add('locked');
+    let player;
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('video-container', {
+            height: '100%',
+            width: '100%',
+            videoId: episodes[0].videoId,
+            playerVars: {
+                'playsinline': 1,
+                'controls': 1,
+                'autoplay': 0
+            },
+            events: {
+                'onReady': onPlayerReady
             }
-            item.innerHTML = `${ep.id}`;
-            item.onclick = () => playEpisode(ep.id);
-            grid.appendChild(item);
         });
-        
-        // 초기 메시지 표시
-        document.getElementById('video-container').innerHTML = '<p class="text-center">에피소드를 선택하세요</p>';
+    }
+
+    function onPlayerReady(event) {
+        // 플레이어가 준비되면 필요한 작업을 수행할 수 있습니다.
     }
 
     function playEpisode(id) {
         console.log(`에피소드 ${id} 재생`); // 디버깅용 로그
         const episode = episodes.find(ep => ep.id === id);
-        if (episode) {
-            const videoContainer = document.getElementById('video-container');
-            videoContainer.innerHTML = `
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${episode.videoId}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            `;
+        if (episode && player) {
+            player.loadVideoById(episode.videoId);
             localStorage.setItem('lastWatchedEpisode', id);
+            updateEpisodeCount(id);
             
             // 모든 에피소드 항목의 배경색 초기화
             document.querySelectorAll('.episode-item').forEach(item => {
@@ -51,7 +53,7 @@
                 currentEpisode.classList.add('active');
             }
         } else {
-            console.error(`에피소드 ${id}를 찾을 수 없습니다.`);
+            console.error(`에피소드 ${id}를 찾을 수 없거나 플레이어가 준비되지 않았습니다.`);
         }
     }
 
