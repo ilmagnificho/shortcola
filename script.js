@@ -91,25 +91,6 @@
         }
     }
 
-    function onPlayerReady(event) {
-        event.target.playVideo();
-    }
-
-    function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.ENDED) {
-            playNextEpisode();
-        }
-    }
-
-    function playNextEpisode() {
-        currentEpisode++;
-        if (currentEpisode <= episodes.length) {
-            playEpisode(currentEpisode);
-        } else {
-            console.log("모든 에피소드를 시청했습니다.");
-        }
-    }
-
     function playEpisode(id) {
         const episode = episodes.find(ep => ep.id === id);
         if (episode) {
@@ -137,25 +118,6 @@
         }
     }
 
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('video-container', {
-            height: '100%',
-            width: '100%',
-            videoId: episodes[0].videoId,
-            playerVars: {
-                'autoplay': 1,
-                'playsinline': 1,
-                'controls': 0,
-                'loop': 0
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
-        initializeUI();
-    }
-
     function initializeUI() {
         loadEpisodes();
 
@@ -163,6 +125,30 @@
         const listButton = document.getElementById('list-button');
         const shareButton = document.getElementById('share-button');
         const episodeOverlay = document.getElementById('episode-overlay');
+        const playButton = document.createElement('button');
+        
+        playButton.id = 'play-button';
+        playButton.innerHTML = '재생';
+        playButton.style.position = 'absolute';
+        playButton.style.top = '50%';
+        playButton.style.left = '50%';
+        playButton.style.transform = 'translate(-50%, -50%)';
+        playButton.style.fontSize = '24px';
+        playButton.style.padding = '10px 20px';
+        playButton.style.backgroundColor = '#FFD700';
+        playButton.style.color = '#000';
+        playButton.style.border = 'none';
+        playButton.style.borderRadius = '5px';
+        playButton.style.cursor = 'pointer';
+        
+        document.body.appendChild(playButton);
+
+        playButton.addEventListener('click', () => {
+            if (player) {
+                player.playVideo();
+                playButton.style.display = 'none';
+            }
+        });
 
         backButton.addEventListener('click', () => {
             console.log('뒤로 가기');
@@ -192,6 +178,44 @@
         });
     }
 
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('video-container', {
+            height: '100%',
+            width: '100%',
+            videoId: episodes[0].videoId,
+            playerVars: {
+                'autoplay': 0,
+                'playsinline': 1,
+                'controls': 0,
+                'loop': 0
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        console.log('Player is ready');
+        initializeUI();
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.ENDED) {
+            playNextEpisode();
+        }
+    }
+
+    function playNextEpisode() {
+        currentEpisode++;
+        if (currentEpisode <= episodes.length) {
+            playEpisode(currentEpisode);
+        } else {
+            console.log("모든 에피소드를 시청했습니다.");
+        }
+    }
+
     function loadYouTubeAPI() {
         const tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
@@ -200,4 +224,5 @@
     }
 
     document.addEventListener('DOMContentLoaded', loadYouTubeAPI);
+    window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 })();
