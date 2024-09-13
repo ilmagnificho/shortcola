@@ -21,16 +21,19 @@
     }
 
     function loadEpisodes() {
-        const grid = document.getElementById('episode-grid');
+        const overlay = document.getElementById('episode-overlay');
         episodes.forEach(ep => {
             const item = document.createElement('div');
             item.className = "episode-item";
             if (ep.id > 5) {
                 item.classList.add('locked');
             }
-            item.textContent = ep.id;
-            item.onclick = () => playEpisode(ep.id);
-            grid.appendChild(item);
+            item.textContent = `에피소드 ${ep.id}`;
+            item.onclick = () => {
+                playEpisode(ep.id);
+                overlay.style.display = 'none';
+            };
+            overlay.appendChild(item);
         });
     }
 
@@ -54,6 +57,19 @@
             '595.5k'
         );
         loadEpisodes();
-        playEpisode(1);  // 첫 번째 에피소드 자동 재생
+        playEpisode(1);
+
+        const episodeListButton = document.getElementById('episode-list-button');
+        const episodeOverlay = document.getElementById('episode-overlay');
+
+        episodeListButton.addEventListener('click', () => {
+            episodeOverlay.style.display = 'block';
+        });
+
+        episodeOverlay.addEventListener('click', (e) => {
+            if (e.target === episodeOverlay) {
+                episodeOverlay.style.display = 'none';
+            }
+        });
     });
 })();
