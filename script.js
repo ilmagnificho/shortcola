@@ -78,6 +78,8 @@
         setTimeout(() => {
             document.body.removeChild(adOverlay);
             unlockEpisode(id);
+            playEpisode(id);
+            document.getElementById('episode-overlay').style.display = 'none';
         }, 5000); // 5초 후 광고 종료
     }
 
@@ -86,7 +88,6 @@
         if (episode) {
             episode.locked = false;
             loadEpisodes();
-            playEpisode(id);
         }
     }
 
@@ -112,10 +113,6 @@
     function playEpisode(id) {
         const episode = episodes.find(ep => ep.id === id);
         if (episode) {
-            if (episode.locked) {
-                unlockEpisode(id);
-                return;
-            }
             currentEpisode = id;
             if (player) {
                 player.loadVideoById(episode.videoId);
