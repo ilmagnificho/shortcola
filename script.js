@@ -112,9 +112,9 @@
     }
 
     function playNextEpisode() {
-        currentEpisode++;
-        if (currentEpisode <= episodes.length) {
-            playEpisode(currentEpisode);
+        const nextEpisodeId = currentEpisode + 1;
+        if (nextEpisodeId <= episodes.length) {
+            playEpisode(nextEpisodeId);
         } else {
             console.log("모든 에피소드를 시청했습니다.");
         }
@@ -123,8 +123,57 @@
     function playEpisode(id) {
         const episode = episodes.find(ep => ep.id === id);
         if (episode) {
-            player.loadVideoById(episode.videoId);
-            document.getElementById('episode-count').textContent = `${id}/10`;
+            if (episode.locked) {
+                showAdPrompt(id);
+            } else {
+                player.loadVideoById(episode.videoId);
+                document.getElementById('episode-count').textContent = `${id}/10`;
+                currentEpisode = id;
+            }
+        }
+    }
+
+    function showAdPrompt(id) {
+        const adPrompt = document.createElement('div');
+        adPrompt.className = 'ad-prompt';
+        adPrompt.innerHTML = `
+            <p>에피소드 ${id}를 시청하려면 광고를 봐야 합니다. 광고를 보시겠습니까?</p>
+            <button id="ad-confirm">확인</button>
+            <button id="ad-cancel">취소</button>
+        `;
+        document.body.appendChild(adPrompt);
+
+        document.getElementById('ad-confirm').onclick = () => {
+            document.body.removeChild(adPrompt);
+            playAd(id);
+        };
+        document.getElementById('ad-cancel').onclick = () => {
+            document.body.removeChild(adPrompt);
+        };
+    }
+
+    function playAd(id) {
+        const adOverlay = document.createElement('div');
+        adOverlay.className = 'ad-overlay';
+        adOverlay.innerHTML = `
+            <div class="ad-content">
+                <h2>광고 재생 중...</h2>
+                <p>5초 후 자동으로 닫힙니다.</p>
+            </div>
+        `;
+        document.body.appendChild(adOverlay);
+
+        setTimeout(() => {
+            document.body.removeChild(adOverlay);
+            unlockEpisode(id);
+            playEpisode(id);
+        }, 5000); // 5초 후 광고 종료
+    }
+
+    function unlockEpisode(id) {
+        const episode = episodes.find(ep => ep.id === id);
+        if (episode) {
+            episode.locked = false;
         }
     }
 
