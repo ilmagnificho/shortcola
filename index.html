@@ -92,7 +92,7 @@
             cursor: pointer;
         }
         .episode-item.locked::after {
-            content: '\f023'; /* Font Awesome 자물쇠 아이콘 */
+            content: '\f023';
             font-family: 'Font Awesome 5 Free';
             font-weight: 900;
             position: absolute;
@@ -114,26 +114,6 @@
             .episode-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
-            .episode-list {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0,0,0,0.9);
-                z-index: 1000;
-                overflow-y: auto;
-                padding: 20px;
-            }
-            .close-list {
-                display: none;
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                font-size: 24px;
-                cursor: pointer;
-            }
         }
     </style>
 </head>
@@ -144,19 +124,16 @@
             <div class="play-button">▶</div>
         </div>
         <div class="info-container">
-            <h1 class="drama-title" id="drama-title">주인님의 죽음을 위해서</h1>
-            <div class="genre" id="drama-genre">Genres : 혐관물</div>
+            <h1 class="drama-title" id="drama-title"></h1>
+            <div class="genre" id="drama-genre"></div>
             <div class="stats">
-                <span><i class="fas fa-heart"></i> <span id="like-count">100.3k</span></span>
-                <span><i class="fas fa-star"></i> <span id="star-count">595.5k</span></span>
+                <span><i class="fas fa-heart"></i> <span id="like-count"></span></span>
+                <span><i class="fas fa-star"></i> <span id="star-count"></span></span>
                 <span><i class="fas fa-share"></i> Share</span>
             </div>
-            <div class="plot" id="drama-plot">
-                선우는 주인님의 죽음을 위해서 필사의 노력을 다하는데!! 
-            </div>
+            <div class="plot" id="drama-plot"></div>
             <div class="episode-list" id="episode-list">
                 <div class="episode-header">
-                    <h2>Episode List of Breaking the Ice</h2>
                     <div>Episode ( <span id="current-episode">0</span>/<span id="total-episodes">10</span> )</div>
                 </div>
                 <div class="episode-grid" id="episode-grid">
@@ -168,42 +145,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
-    <script>
-        const totalEpisodes = 10; // 총 에피소드 수를 여기서 설정합니다.
-        const freeEpisodes = 5; // 무료로 볼 수 있는 에피소드 수
-        
-        function updateEpisodeCount(current) {
-            document.getElementById('current-episode').textContent = current;
-            document.getElementById('total-episodes').textContent = totalEpisodes;
-        }
-
-        // 에피소드 목록 생성
-        const episodeGrid = document.getElementById('episode-grid');
-        for (let i = 1; i <= totalEpisodes; i++) {
-            const episodeItem = document.createElement('div');
-            episodeItem.className = 'episode-item';
-            episodeItem.textContent = i;
-            if (i > freeEpisodes) {
-                episodeItem.classList.add('locked');
-            }
-            episodeItem.onclick = function() {
-                updateEpisodeCount(i);
-                // 여기에 에피소드 선택 시 추가 동작을 구현할 수 있습니다.
-            };
-            episodeGrid.appendChild(episodeItem);
-        }
-
-        // 초기 에피소드 카운트 설정
-        updateEpisodeCount(0);
-
-        function toggleEpisodeList() {
-            const list = document.getElementById('episode-list');
-            const closeBtn = document.querySelector('.close-list');
-            if (window.innerWidth <= 768) {
-                list.style.display = list.style.display === 'none' ? 'block' : 'none';
-                closeBtn.style.display = list.style.display === 'none' ? 'none' : 'block';
-            }
-        }
-    </script>
 </body>
 </html>
