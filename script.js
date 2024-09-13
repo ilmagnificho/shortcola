@@ -12,16 +12,15 @@
         {id: 10, title: "에피소드 10", videoId: "IAmpmai_3yY"},
     ];
 
-    function updateDramaInfo(title, genre, plot, likeCount, starCount) {
+    function updateDramaInfo(title, genre, plot) {
         document.getElementById('drama-title').textContent = title;
         document.getElementById('drama-genre').textContent = genre;
         document.getElementById('drama-plot').textContent = plot;
-        document.getElementById('like-count').textContent = likeCount;
-        document.getElementById('star-count').textContent = starCount;
     }
 
     function loadEpisodes() {
         const overlay = document.getElementById('episode-overlay');
+        overlay.innerHTML = ''; // Clear existing content
         episodes.forEach(ep => {
             const item = document.createElement('div');
             item.className = "episode-item";
@@ -42,9 +41,8 @@
         if (episode) {
             const videoContainer = document.getElementById('video-container');
             videoContainer.innerHTML = `
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${episode.videoId}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${episode.videoId}?autoplay=1&playsinline=1&controls=0&loop=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             `;
-            document.getElementById('episode-count').textContent = `${id}/10`;
         }
     }
 
@@ -52,22 +50,20 @@
         updateDramaInfo(
             '주인님의 죽음을 위해서', 
             'Genres : 혐관물',
-            '선우는 주인님의 죽음을 위해서 필사의 노력을 다하는데!!',
-            '100.3k',
-            '595.5k'
+            '선우는 주인님의 죽음을 위해서 필사의 노력을 다하는데!!'
         );
         loadEpisodes();
         playEpisode(1);
 
-        const episodeListButton = document.getElementById('episode-list-button');
+        const listButton = document.getElementById('list-button');
         const episodeOverlay = document.getElementById('episode-overlay');
 
-        episodeListButton.addEventListener('click', () => {
-            episodeOverlay.style.display = 'block';
+        listButton.addEventListener('click', () => {
+            episodeOverlay.style.display = episodeOverlay.style.display === 'block' ? 'none' : 'block';
         });
 
-        episodeOverlay.addEventListener('click', (e) => {
-            if (e.target === episodeOverlay) {
+        document.addEventListener('click', (e) => {
+            if (e.target !== listButton && !episodeOverlay.contains(e.target)) {
                 episodeOverlay.style.display = 'none';
             }
         });
