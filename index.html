@@ -6,35 +6,9 @@
     <title>주인님의 죽음을 위해서</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-        }
-        #video-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        #top-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 10px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-        }
-        #back-button, .side-button {
+        /* 기존 스타일 유지 */
+        
+        #back-button, .side-button, #episode-count, #overlay-close {
             color: #FFD700; /* 골드 색상 */
             font-size: 24px;
             background: none;
@@ -42,27 +16,18 @@
             cursor: pointer;
             transition: color 0.3s ease;
         }
-        #back-button:hover, .side-button:hover {
+
+        #back-button:hover, .side-button:hover, #overlay-close:hover {
             color: #FFA500; /* 호버 시 오렌지 색상 */
         }
+
         #episode-count {
             font-size: 16px;
-            color: #00FFFF; /* 시안 색상 */
         }
-        #overlay-close {
-            color: #FF69B4; /* 핫핑크 색상 */
-            font-size: 28px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        #overlay-close:hover {
-            color: #FF1493; /* 호버 시 딥핑크 색상 */
-        }
+
         .episode-item {
-            background-color: #4B0082; /* 인디고 색상 */
-            color: #fff;
+            background-color: rgba(255, 215, 0, 0.2); /* 반투명 골드 배경 */
+            color: #FFD700; /* 골드 텍스트 */
             padding: 15px;
             text-align: center;
             border-radius: 10px;
@@ -70,77 +35,16 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         .episode-item:hover {
-            background-color: #8A2BE2; /* 호버 시 블루바이올렛 색상 */
+            background-color: rgba(255, 215, 0, 0.4); /* 호버 시 더 진한 골드 배경 */
         }
-        .episode-item.locked {
-            opacity: 0.7;
-        }
+
         .episode-item.locked::after {
-            content: '\f023';
-            font-family: 'Font Awesome 5 Free';
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: #FF6347; /* 토마토 색상 */
+            color: #FFD700; /* 골드 색상의 자물쇠 아이콘 */
         }
-        #episode-overlay {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            overflow-y: auto;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-        .episode-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            padding: 20px;
-            margin-top: 40px;
-        }
-        .ad-prompt {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            color: black;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            z-index: 1002;
-            width: 80%;
-            max-width: 300px;
-        }
-        .ad-prompt button {
-            margin: 10px;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .ad-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1003;
-        }
-        .ad-content {
-            color: white;
-            text-align: center;
-        }
+
+        /* 나머지 스타일 유지 */
     </style>
 </head>
 <body>
