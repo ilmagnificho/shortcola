@@ -113,6 +113,31 @@
         } else {
             playEpisode(1);
         }
+        
+        const episodeListIcon = document.getElementById('episode-list-icon');
+        const episodeOverlay = document.getElementById('episode-overlay');
+        const closeOverlay = document.getElementById('close-overlay');
+
+        episodeListIcon.addEventListener('click', () => {
+            episodeOverlay.style.display = 'block';
+        });
+
+        closeOverlay.addEventListener('click', () => {
+            episodeOverlay.style.display = 'none';
+        });
+
+        function updateEpisodeCount(currentEpisode) {
+            document.getElementById('episode-count').textContent = `${currentEpisode}/10`;
+        }
+
+        function playEpisode(id) {
+            // ... 기존 코드 ...
+            updateEpisodeCount(id);
+            episodeOverlay.style.display = 'none';
+        }
+
+        // 초기 에피소드 카운트 설정
+        updateEpisodeCount(0);
     });
 
     console.log("script.js loaded and executed");
