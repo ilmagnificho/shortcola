@@ -34,32 +34,55 @@
             align-items: center;
             z-index: 10;
         }
-        #back-button {
-            color: #fff;
+        #back-button, .side-button {
+            color: #FFD700; /* 골드 색상 */
             font-size: 24px;
             background: none;
             border: none;
             cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        #back-button:hover, .side-button:hover {
+            color: #FFA500; /* 호버 시 오렌지 색상 */
         }
         #episode-count {
             font-size: 16px;
+            color: #00FFFF; /* 시안 색상 */
         }
-        #side-buttons {
-            position: absolute;
-            right: 10px;
-            bottom: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 10;
-        }
-        .side-button {
+        #overlay-close {
+            color: #FF69B4; /* 핫핑크 색상 */
+            font-size: 28px;
             background: none;
             border: none;
-            color: #fff;
-            font-size: 24px;
-            margin: 10px 0;
             cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        #overlay-close:hover {
+            color: #FF1493; /* 호버 시 딥핑크 색상 */
+        }
+        .episode-item {
+            background-color: #4B0082; /* 인디고 색상 */
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .episode-item:hover {
+            background-color: #8A2BE2; /* 호버 시 블루바이올렛 색상 */
+        }
+        .episode-item.locked {
+            opacity: 0.7;
+        }
+        .episode-item.locked::after {
+            content: '\f023';
+            font-family: 'Font Awesome 5 Free';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #FF6347; /* 토마토 색상 */
         }
         #episode-overlay {
             display: none;
@@ -80,36 +103,6 @@
             gap: 10px;
             padding: 20px;
             margin-top: 40px;
-        }
-        .episode-item {
-            background-color: #333;
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-            border-radius: 10px;
-            position: relative;
-        }
-        .episode-item.locked {
-            opacity: 0.7;
-        }
-        .episode-item.locked::after {
-            content: '\f023';
-            font-family: 'Font Awesome 5 Free';
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: #ff4757;
-        }
-        #overlay-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 1001;
         }
         .ad-prompt {
             position: fixed;
