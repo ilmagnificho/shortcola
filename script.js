@@ -1,15 +1,15 @@
 (function() {
     const episodes = [
         {id: 1, title: "에피소드 1", videoId: "hfqup-YNCk4"},
-        {id: 2, title: "에피소드 2", videoId: "VIDEO_ID_2"},
-        {id: 3, title: "에피소드 3", videoId: "VIDEO_ID_3"},
-        {id: 4, title: "에피소드 4", videoId: "VIDEO_ID_4"},
-        {id: 5, title: "에피소드 5", videoId: "VIDEO_ID_5"},
-        {id: 6, title: "에피소드 6 (광고)", videoId: "VIDEO_ID_6"},
-        {id: 7, title: "에피소드 7 (광고)", videoId: "VIDEO_ID_7"},
-        {id: 8, title: "에피소드 8 (광고)", videoId: "VIDEO_ID_8"},
-        {id: 9, title: "에피소드 9 (광고)", videoId: "VIDEO_ID_9"},
-        {id: 10, title: "에피소드 10 (광고)", videoId: "VIDEO_ID_10"},
+        {id: 2, title: "에피소드 2", videoId: "8nGvwQ2Vteo"},
+        {id: 3, title: "에피소드 3", videoId: "trvOrFO5aUk"},
+        {id: 4, title: "에피소드 4", videoId: "htw1TsXlZ6E"},
+        {id: 5, title: "에피소드 5", videoId: "r1N89xFzSsA"},
+        {id: 6, title: "에피소드 6", videoId: "qll4P2CdCno"},
+        {id: 7, title: "에피소드 7", videoId: "pct2Op9H7F0"},
+        {id: 8, title: "에피소드 8", videoId: "B8WjorPPg1U"},
+        {id: 9, title: "에피소드 9", videoId: "eG7YZ4XvBIQ"},
+        {id: 10, title: "에피소드 10", videoId: "IAmpmai_3yY"},
     ];
 
     function loadEpisodes() {
