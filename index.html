@@ -2,112 +2,49 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주인님의 죽음을 위해서</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #FFD700;
-        }
-        #video-container {
+        /* 기존 스타일 유지 */
+        .ad-prompt, .ad-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
-        }
-        #top-bar, #side-buttons {
-            position: fixed;
-            z-index: 2;
-        }
-        #top-bar {
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        #side-buttons {
-            right: 10px;
-            bottom: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .side-button {
-            background: none;
-            border: none;
-            color: #FFD700;
-            font-size: 24px;
-            margin: 10px 0;
-            cursor: pointer;
-        }
-        #episode-overlay {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
             background: rgba(0,0,0,0.8);
-            z-index: 3;
-            overflow-y: auto;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            padding-top: 40px; /* 상단에 여백 추가 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
-        .episode-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
+        .ad-content {
+            background: #fff;
             padding: 20px;
-        }
-        .episode-item {
-            background-color: rgba(255, 215, 0, 0.2);
-            color: #FFD700;
-            padding: 15px;
-            text-align: center;
             border-radius: 10px;
-            cursor: pointer;
+            text-align: center;
         }
-        .episode-item.locked::after {
-            content: '\f023';
-            font-family: 'Font Awesome 5 Free';
-            margin-left: 5px;
-        }
-        #overlay-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #FFD700;
-            font-size: 24px;
+        #ad-confirm, #ad-cancel {
+            margin: 10px;
+            padding: 5px 10px;
             cursor: pointer;
-            z-index: 4; /* 다른 요소들보다 위에 오도록 z-index 추가 */
         }
     </style>
 </head>
 <body>
     <div id="video-container"></div>
     <div id="top-bar">
-        <button id="back-button"><i class="fas fa-chevron-left"></i></button>
-        <span id="episode-count">1/10</span>
+        <button id="back-button"><i class="fas fa-arrow-left"></i></button>
+        <div id="episode-count">1/10</div>
     </div>
     <div id="side-buttons">
         <button id="list-button" class="side-button"><i class="fas fa-list"></i></button>
         <button id="share-button" class="side-button"><i class="fas fa-share"></i></button>
     </div>
-    <div id="episode-overlay"></div>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <div id="episode-overlay">
+        <!-- 에피소드 목록은 JavaScript에서 동적으로 생성됩니다 -->
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
