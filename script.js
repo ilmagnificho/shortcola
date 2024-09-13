@@ -15,12 +15,6 @@
     let currentEpisode = 1;
     let player;
 
-    function updateDramaInfo(title, genre, plot) {
-        document.getElementById('drama-title').textContent = title;
-        document.getElementById('drama-genre').textContent = genre;
-        document.getElementById('drama-plot').textContent = plot;
-    }
-
     function loadEpisodes() {
         const overlay = document.getElementById('episode-overlay');
         overlay.innerHTML = `
@@ -56,18 +50,16 @@
     }
 
     function unlockEpisode(id) {
-        // 여기에 광고 재생 로직을 추가하세요
         console.log(`에피소드 ${id} 광고 재생`);
         
-        // 광고 재생 후 에피소드 잠금 해제
         setTimeout(() => {
             const episode = episodes.find(ep => ep.id === id);
             if (episode) {
                 episode.locked = false;
-                loadEpisodes(); // 목록 새로고침
+                loadEpisodes();
                 playEpisode(id);
             }
-        }, 1000); // 실제 광고 재생 시간으로 조정하세요
+        }, 1000);
     }
 
     function onPlayerReady(event) {
@@ -120,35 +112,42 @@
         }
     }
 
-    function loadYouTubeAPI() {
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    }
-
     window.onYouTubeIframeAPIReady = function() {
         playEpisode(currentEpisode);
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        updateDramaInfo(
-            '주인님의 죽음을 위해서', 
-            'Genres : 혐관물',
-            '선우는 주인님의 죽음을 위해서 필사의 노력을 다하는데!!'
-        );
         loadEpisodes();
-        loadYouTubeAPI();
 
         const listButton = document.getElementById('list-button');
+        const shareButton = document.getElementById('share-button');
         const episodeOverlay = document.getElementById('episode-overlay');
 
         listButton.addEventListener('click', () => {
             episodeOverlay.style.display = episodeOverlay.style.display === 'block' ? 'none' : 'block';
         });
 
+        shareButton.addEventListener('click', () => {
+            // 공유 기능 구현
+            const shareUrl = window.location.href;
+            const shareTitle = "주인님의 죽음을 위해서";
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: shareTitle,
+                    url: shareUrl
+                }).then(() => {
+                    console.log('공유 성공');
+                }).catch((error) => {
+                    console.log('공유 실패:', error);
+                });
+            } else {
+                // 웹 공유 API를 지원하지 않는 브라우저를 위한 대체 방법
+                prompt("이 링크를 복사하여 공유하세요:", shareUrl);
+            }
+        });
+
         document.getElementById('back-button').addEventListener('click', () => {
-            // 뒤로 가기 기능 구현
             console.log('뒤로 가기');
         });
     });
