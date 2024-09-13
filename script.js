@@ -116,19 +116,25 @@
         playEpisode(currentEpisode);
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    function initializeUI() {
         loadEpisodes();
 
+        const backButton = document.getElementById('back-button');
         const listButton = document.getElementById('list-button');
         const shareButton = document.getElementById('share-button');
         const episodeOverlay = document.getElementById('episode-overlay');
+
+        backButton.addEventListener('click', () => {
+            console.log('뒤로 가기');
+            // 여기에 실제 뒤로 가기 로직을 구현하세요
+            history.back();
+        });
 
         listButton.addEventListener('click', () => {
             episodeOverlay.style.display = episodeOverlay.style.display === 'block' ? 'none' : 'block';
         });
 
         shareButton.addEventListener('click', () => {
-            // 공유 기능 구현
             const shareUrl = window.location.href;
             const shareTitle = "주인님의 죽음을 위해서";
             
@@ -142,13 +148,11 @@
                     console.log('공유 실패:', error);
                 });
             } else {
-                // 웹 공유 API를 지원하지 않는 브라우저를 위한 대체 방법
                 prompt("이 링크를 복사하여 공유하세요:", shareUrl);
             }
         });
+    }
 
-        document.getElementById('back-button').addEventListener('click', () => {
-            console.log('뒤로 가기');
-        });
-    });
+    // DOMContentLoaded 이벤트를 사용하여 UI 초기화
+    document.addEventListener('DOMContentLoaded', initializeUI);
 })();
