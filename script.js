@@ -66,12 +66,8 @@
             }
             item.textContent = ep.id;
             item.onclick = () => {
-                if (ep.locked) {
-                    showAdPrompt(ep.id);
-                } else {
-                    playEpisode(ep.id);
-                    overlay.style.display = 'none';
-                }
+                playEpisode(ep.id);
+                overlay.style.display = 'none';
             };
             grid.appendChild(item);
         });
