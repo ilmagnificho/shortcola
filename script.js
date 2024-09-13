@@ -12,13 +12,14 @@ const episodes = [
 ];
 
 function loadEpisodes() {
-    const list = document.getElementById('episode-list');
+    const grid = document.getElementById('episode-grid');
+    grid.innerHTML = ''; // 기존 내용을 초기화합니다.
     episodes.forEach(ep => {
         const item = document.createElement('div');
         item.className = "episode-item";
         item.innerHTML = `${ep.id}`;
         item.onclick = () => playEpisode(ep.id);
-        list.appendChild(item);
+        grid.appendChild(item);
     });
     
     // 초기 메시지 표시
