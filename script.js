@@ -18,7 +18,7 @@
     function loadEpisodes() {
         const overlay = document.getElementById('episode-overlay');
         overlay.innerHTML = `
-            <button id="overlay-close" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 24px;">&times;</button>
+            <button id="overlay-close">&times;</button>
             <div class="episode-grid"></div>
         `;
         const grid = overlay.querySelector('.episode-grid');
@@ -47,17 +47,7 @@
 
     function showAdPrompt(id) {
         const adPrompt = document.createElement('div');
-        adPrompt.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            z-index: 1001;
-        `;
+        adPrompt.className = 'ad-prompt';
         adPrompt.innerHTML = `
             <p>에피소드 ${id}를 시청하려면 광고를 봐야 합니다. 광고를 보시겠습니까?</p>
             <button id="ad-confirm">확인</button>
@@ -76,20 +66,9 @@
 
     function playAd(id) {
         const adOverlay = document.createElement('div');
-        adOverlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1002;
-        `;
+        adOverlay.className = 'ad-overlay';
         adOverlay.innerHTML = `
-            <div style="color: white; text-align: center;">
+            <div class="ad-content">
                 <h2>광고 재생 중...</h2>
                 <p>5초 후 자동으로 닫힙니다.</p>
             </div>
