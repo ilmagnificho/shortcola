@@ -101,13 +101,14 @@
             font-size: 12px;
         }
         .episode-list-icon {
-            position: absolute;
+            position: fixed;
             bottom: 20px;
             right: 20px;
             background: rgba(0,0,0,0.5);
             color: white;
             padding: 10px;
             border-radius: 5px;
+            z-index: 1000;
             cursor: pointer;
         }
         .episode-overlay {
@@ -118,7 +119,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.8);
-            z-index: 1000;
+            z-index: 2000;
         }
         .episode-overlay-content {
             position: absolute;
