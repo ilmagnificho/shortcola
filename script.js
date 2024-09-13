@@ -96,7 +96,7 @@ function updateDramaInfo(title, genre, plot, likeCount, starCount) {
 
 // 페이지 로드 시 실행
 window.onload = () => {
-    loadEpisodes();
+    console.log("Window loaded, updating drama info");
     updateDramaInfo(
         '주인님의 죽음을 위해서', 
         'Genres : 혐관물',
@@ -113,3 +113,5 @@ window.onload = () => {
         playEpisode(1);
     }
 };
+
+console.log("script.js loaded and executed");
