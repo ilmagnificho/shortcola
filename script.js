@@ -32,27 +32,26 @@
 
     function playEpisode(id) {
         console.log(`에피소드 ${id} 재생`); // 디버깅용 로그
-        if (id > 5 && !localStorage.getItem(`ad_watched_${id}`)) {
-            playAd(id);
-        } else {
-            const episode = episodes.find(ep => ep.id === id);
-            if (episode) {
-                document.getElementById('video-container').innerHTML = `
-                    <iframe src="https://www.youtube.com/embed/${episode.videoId}" frameborder="0" allowfullscreen></iframe>
-                `;
-                localStorage.setItem('lastWatchedEpisode', id);
-                
-                // 모든 에피소드 항목의 배경색 초기화
-                document.querySelectorAll('.episode-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                
-                // 현재 재생 중인 에피소드 배경색 변경
-                const currentEpisode = document.querySelector(`.episode-item:nth-child(${id})`);
-                if (currentEpisode) {
-                    currentEpisode.classList.add('active');
-                }
+        const episode = episodes.find(ep => ep.id === id);
+        if (episode) {
+            const videoContainer = document.getElementById('video-container');
+            videoContainer.innerHTML = `
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${episode.videoId}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            `;
+            localStorage.setItem('lastWatchedEpisode', id);
+            
+            // 모든 에피소드 항목의 배경색 초기화
+            document.querySelectorAll('.episode-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 현재 재생 중인 에피소드 배경색 변경
+            const currentEpisode = document.querySelector(`.episode-item:nth-child(${id})`);
+            if (currentEpisode) {
+                currentEpisode.classList.add('active');
             }
+        } else {
+            console.error(`에피소드 ${id}를 찾을 수 없습니다.`);
         }
     }
 
@@ -105,7 +104,7 @@
             '100.3k',
             '595.5k'
         );
-        loadEpisodes();
+        loadEpisodes(); // 이 줄이 있는지 확인하세요
         
         // 마지막으로 시청한 에피소드 재생 또는 첫 번째 에피소드 재생
         const lastWatched = localStorage.getItem('lastWatchedEpisode');
