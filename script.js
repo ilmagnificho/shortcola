@@ -16,6 +16,8 @@
     let player;
 
     function initializeUI() {
+        loadEpisodes();
+
         const backButton = document.getElementById('back-button');
         const listButton = document.getElementById('list-button');
         const shareButton = document.getElementById('share-button');
@@ -47,8 +49,6 @@
                 prompt("이 링크를 복사하여 공유하세요:", shareUrl);
             }
         });
-
-        loadEpisodes();
     }
 
     function loadEpisodes() {
@@ -66,8 +66,8 @@
             }
             item.textContent = ep.id;
             item.onclick = () => {
-                playEpisode(ep.id);
                 overlay.style.display = 'none';
+                playEpisode(ep.id);
             };
             grid.appendChild(item);
         });
@@ -103,6 +103,7 @@
 
     function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.ENDED) {
+            console.log('Video ended, playing next episode');
             playNextEpisode();
         }
     }
@@ -110,6 +111,7 @@
     function playNextEpisode() {
         const nextEpisodeId = currentEpisode + 1;
         if (nextEpisodeId <= episodes.length) {
+            console.log('Playing next episode:', nextEpisodeId);
             playEpisode(nextEpisodeId);
         } else {
             console.log("모든 에피소드를 시청했습니다.");
@@ -117,11 +119,14 @@
     }
 
     function playEpisode(id) {
+        console.log('Attempting to play episode:', id);
         const episode = episodes.find(ep => ep.id === id);
         if (episode) {
             if (episode.locked) {
+                console.log('Episode is locked, showing ad prompt');
                 showAdPrompt(id);
             } else {
+                console.log('Playing episode:', id);
                 player.loadVideoById(episode.videoId);
                 document.getElementById('episode-count').textContent = `${id}/10`;
                 currentEpisode = id;
@@ -130,6 +135,7 @@
     }
 
     function showAdPrompt(id) {
+        console.log('Showing ad prompt for episode:', id);
         const adPrompt = document.createElement('div');
         adPrompt.className = 'ad-prompt';
         adPrompt.innerHTML = `
@@ -149,6 +155,7 @@
     }
 
     function playAd(id) {
+        console.log('Playing ad for episode:', id);
         const adOverlay = document.createElement('div');
         adOverlay.className = 'ad-overlay';
         adOverlay.innerHTML = `
@@ -167,6 +174,7 @@
     }
 
     function unlockEpisode(id) {
+        console.log('Unlocking episode:', id);
         const episode = episodes.find(ep => ep.id === id);
         if (episode) {
             episode.locked = false;
