@@ -17,6 +17,9 @@ function loadEpisodes() {
     episodes.forEach(ep => {
         const item = document.createElement('div');
         item.className = "episode-item";
+        if (ep.id > 5) {
+            item.classList.add('locked');
+        }
         item.innerHTML = `${ep.id}`;
         item.onclick = () => playEpisode(ep.id);
         grid.appendChild(item);
@@ -93,11 +96,11 @@ function updateDramaInfo(title, genre, plot, likeCount, starCount) {
 
 // 페이지 로드 시 실행
 window.onload = () => {
-    loadEpisodes(); // 이 줄이 있는지 확인하세요
+    loadEpisodes();
     updateDramaInfo(
-        'Breaking the Ice', 
-        'Genres : Element 1-3 · Background · MC',
-        'Single mom Caroline dumped her first love Easton Black eight years ago...But she never told him he got her pregnant! Now he\'s the hottest hockey star in the league and Caroline\'s boss! Will Caroline tell him the truth, or is it all too late? Based on Shutout by Jami Davenport!',
+        '주인님의 죽음을 위해서', 
+        'Genres : 혐관물',
+        '선우는 주인님의 죽음을 위해서 필사의 노력을 다하는데!!',
         '100.3k',
         '595.5k'
     );
