@@ -59,15 +59,6 @@
             margin: 10px 0;
             cursor: pointer;
         }
-        #drama-info {
-            position: absolute;
-            bottom: 20px;
-            left: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            padding: 10px;
-            border-radius: 5px;
-        }
         #episode-overlay {
             display: none;
             position: fixed;
@@ -136,21 +127,14 @@
     <div id="video-container"></div>
     <div id="top-bar">
         <button id="back-button"><i class="fas fa-chevron-left"></i></button>
-        <span id="episode-count">0/10</span>
+        <span id="episode-count">1/10</span>
     </div>
     <div id="side-buttons">
-        <button class="side-button"><i class="fas fa-heart"></i></button>
-        <button class="side-button"><i class="fas fa-star"></i></button>
         <button id="list-button" class="side-button"><i class="fas fa-list"></i></button>
-        <button class="side-button"><i class="fas fa-share"></i></button>
-    </div>
-    <div id="drama-info">
-        <h2 id="drama-title"></h2>
-        <p id="drama-genre"></p>
-        <p id="drama-plot"></p>
+        <button id="share-button" class="side-button"><i class="fas fa-share"></i></button>
     </div>
     <div id="episode-overlay"></div>
-    <script src="script.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js"></script>
 </body>
 </html>
