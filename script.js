@@ -18,7 +18,7 @@
     function loadEpisodes() {
         const overlay = document.getElementById('episode-overlay');
         overlay.innerHTML = `
-            <button id="overlay-close">&times;</button>
+            <button id="overlay-close" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 24px;">&times;</button>
             <div class="episode-grid"></div>
         `;
         const grid = overlay.querySelector('.episode-grid');
@@ -46,19 +46,60 @@
     }
 
     function showAdPrompt(id) {
-        if (confirm(`에피소드 ${id}를 시청하려면 광고를 봐야 합니다. 광고를 보시겠습니까?`)) {
+        const adPrompt = document.createElement('div');
+        adPrompt.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1001;
+        `;
+        adPrompt.innerHTML = `
+            <p>에피소드 ${id}를 시청하려면 광고를 봐야 합니다. 광고를 보시겠습니까?</p>
+            <button id="ad-confirm">확인</button>
+            <button id="ad-cancel">취소</button>
+        `;
+        document.body.appendChild(adPrompt);
+
+        document.getElementById('ad-confirm').onclick = () => {
+            document.body.removeChild(adPrompt);
             playAd(id);
-        }
+        };
+        document.getElementById('ad-cancel').onclick = () => {
+            document.body.removeChild(adPrompt);
+        };
     }
 
     function playAd(id) {
-        console.log(`에피소드 ${id} 광고 재생 중...`);
-        
-        // 실제 광고 재생 로직을 여기에 구현하세요
+        const adOverlay = document.createElement('div');
+        adOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002;
+        `;
+        adOverlay.innerHTML = `
+            <div style="color: white; text-align: center;">
+                <h2>광고 재생 중...</h2>
+                <p>5초 후 자동으로 닫힙니다.</p>
+            </div>
+        `;
+        document.body.appendChild(adOverlay);
+
         setTimeout(() => {
-            console.log(`에피소드 ${id} 광고 재생 완료`);
+            document.body.removeChild(adOverlay);
             unlockEpisode(id);
-        }, 5000); // 5초 후 광고 종료 (실제 구현 시 이 부분을 수정하세요)
+        }, 5000); // 5초 후 광고 종료
     }
 
     function unlockEpisode(id) {
@@ -138,7 +179,7 @@
         });
 
         listButton.addEventListener('click', () => {
-            episodeOverlay.style.display = episodeOverlay.style.display === 'block' ? 'none' : 'block';
+            episodeOverlay.style.display = 'block';
         });
 
         shareButton.addEventListener('click', () => {
