@@ -155,7 +155,7 @@
         });
 
         listButton.addEventListener('click', () => {
-            episodeOverlay.style.display = 'block';
+            episodeOverlay.style.display = episodeOverlay.style.display === 'block' ? 'none' : 'block';
         });
 
         shareButton.addEventListener('click', () => {
@@ -175,6 +175,9 @@
                 prompt("이 링크를 복사하여 공유하세요:", shareUrl);
             }
         });
+
+        // 페이지 로드 시 1회차 영상 자동 재생
+        playEpisode(1);
     }
 
     document.addEventListener('DOMContentLoaded', initializeUI);
