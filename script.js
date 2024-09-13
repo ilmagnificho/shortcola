@@ -1,6 +1,6 @@
 (function() {
     const episodes = [
-        {id: 1, title: "에피소드 1", videoId: "VIDEO_ID_1"},
+        {id: 1, title: "에피소드 1", videoId: "hfqup-YNCk4"},
         {id: 2, title: "에피소드 2", videoId: "VIDEO_ID_2"},
         {id: 3, title: "에피소드 3", videoId: "VIDEO_ID_3"},
         {id: 4, title: "에피소드 4", videoId: "VIDEO_ID_4"},
