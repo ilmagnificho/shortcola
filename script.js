@@ -19,10 +19,6 @@
         const overlay = document.getElementById('episode-overlay');
         overlay.innerHTML = `
             <button id="overlay-close">&times;</button>
-            <div class="episode-range">
-                <span class="active">1-5</span>
-                <span>6-10</span>
-            </div>
             <div class="episode-grid"></div>
         `;
         const grid = overlay.querySelector('.episode-grid');
@@ -35,7 +31,7 @@
             item.textContent = ep.id;
             item.onclick = () => {
                 if (ep.locked) {
-                    unlockEpisode(ep.id);
+                    showAdPrompt(ep.id);
                 } else {
                     playEpisode(ep.id);
                     overlay.style.display = 'none';
@@ -49,17 +45,29 @@
         });
     }
 
-    function unlockEpisode(id) {
-        console.log(`에피소드 ${id} 광고 재생`);
+    function showAdPrompt(id) {
+        if (confirm(`에피소드 ${id}를 시청하려면 광고를 봐야 합니다. 광고를 보시겠습니까?`)) {
+            playAd(id);
+        }
+    }
+
+    function playAd(id) {
+        console.log(`에피소드 ${id} 광고 재생 중...`);
         
+        // 실제 광고 재생 로직을 여기에 구현하세요
         setTimeout(() => {
-            const episode = episodes.find(ep => ep.id === id);
-            if (episode) {
-                episode.locked = false;
-                loadEpisodes();
-                playEpisode(id);
-            }
-        }, 1000);
+            console.log(`에피소드 ${id} 광고 재생 완료`);
+            unlockEpisode(id);
+        }, 5000); // 5초 후 광고 종료 (실제 구현 시 이 부분을 수정하세요)
+    }
+
+    function unlockEpisode(id) {
+        const episode = episodes.find(ep => ep.id === id);
+        if (episode) {
+            episode.locked = false;
+            loadEpisodes();
+            playEpisode(id);
+        }
     }
 
     function onPlayerReady(event) {
@@ -126,7 +134,6 @@
 
         backButton.addEventListener('click', () => {
             console.log('뒤로 가기');
-            // 여기에 실제 뒤로 가기 로직을 구현하세요
             history.back();
         });
 
@@ -153,6 +160,5 @@
         });
     }
 
-    // DOMContentLoaded 이벤트를 사용하여 UI 초기화
     document.addEventListener('DOMContentLoaded', initializeUI);
 })();
