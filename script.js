@@ -137,8 +137,23 @@
         }
     }
 
-    window.onYouTubeIframeAPIReady = function() {
-        playEpisode(currentEpisode);
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('video-container', {
+            height: '100%',
+            width: '100%',
+            videoId: episodes[0].videoId,
+            playerVars: {
+                'autoplay': 1,
+                'playsinline': 1,
+                'controls': 0,
+                'loop': 0
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+        initializeUI();
     }
 
     function initializeUI() {
@@ -175,10 +190,14 @@
                 prompt("이 링크를 복사하여 공유하세요:", shareUrl);
             }
         });
-
-        // 페이지 로드 시 1회차 영상 자동 재생
-        playEpisode(1);
     }
 
-    document.addEventListener('DOMContentLoaded', initializeUI);
+    function loadYouTubeAPI() {
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
+
+    document.addEventListener('DOMContentLoaded', loadYouTubeAPI);
 })();
