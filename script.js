@@ -87,17 +87,11 @@
         const closeOverlayButton = document.getElementById('close-overlay');
 
         if (listButton) {
-            listButton.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                toggleEpisodeOverlay();
-            });
+            listButton.addEventListener('click', toggleEpisodeOverlay);
         }
 
         if (closeOverlayButton) {
-            closeOverlayButton.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                toggleEpisodeOverlay();
-            });
+            closeOverlayButton.addEventListener('click', toggleEpisodeOverlay);
         }
 
         // ... 기존 코드 ...
