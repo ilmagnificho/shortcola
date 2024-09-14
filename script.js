@@ -84,30 +84,41 @@
         const listButton = document.getElementById('list-button');
         const shareButton = document.getElementById('share-button');
 
-        backButton.addEventListener('click', () => {
-            window.history.back();
-        });
+        if (backButton) {
+            backButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                window.history.back();
+            });
+        }
 
-        listButton.addEventListener('click', () => {
-            const episodeOverlay = document.getElementById('episode-overlay');
-            episodeOverlay.style.display = episodeOverlay.style.display === 'none' ? 'block' : 'none';
-        });
+        if (listButton) {
+            listButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const episodeOverlay = document.getElementById('episode-overlay');
+                if (episodeOverlay) {
+                    episodeOverlay.style.display = episodeOverlay.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+        }
 
-        shareButton.addEventListener('click', () => {
-            if (navigator.share) {
-                navigator.share({
-                    title: '나는 너, 너는 나',
-                    text: `에피소드 ${currentEpisode} 보기`,
-                    url: window.location.href
-                }).then(() => {
-                    console.log('공유 성공');
-                }).catch((error) => {
-                    console.log('공유 실패:', error);
-                });
-            } else {
-                alert('공유 기능을 지원하지 않는 브라우저입니다.');
-            }
-        });
+        if (shareButton) {
+            shareButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (navigator.share) {
+                    navigator.share({
+                        title: '나는 너, 너는 나',
+                        text: `에피소드 ${currentEpisode} 보기`,
+                        url: window.location.href
+                    }).then(() => {
+                        console.log('공유 성공');
+                    }).catch((error) => {
+                        console.log('공유 실패:', error);
+                    });
+                } else {
+                    alert('공유 기능을 지원하지 않는 브라우저입니다.');
+                }
+            });
+        }
     }
 
     function setupAutoplay() {
@@ -131,6 +142,20 @@
         createEpisodeList();
         addButtonListeners();
         playEpisode(0);
+
+        // 모바일에서 더블탭 줌 방지
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        // 모바일에서 핀치 줌 방지
+        document.addEventListener('touchmove', function(event) {
+            if (event.scale !== 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
     }
 
     // YouTube API 로드
