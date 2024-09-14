@@ -51,15 +51,22 @@
     function playEpisode(index) {
         currentEpisode = index;
         const videoContainer = document.getElementById('video-container');
-        videoContainer.innerHTML = `<iframe id="youtube-player" width="100%" height="100%" src="https://www.youtube.com/embed/${episodes[index].id}?enablejsapi=1" frameborder="0" allowfullscreen></iframe>`;
+        videoContainer.innerHTML = `<div id="youtube-player"></div>`;
         updateEpisodeCount();
 
-        // YouTube API를 사용하여 자동 재생 설정
-        const player = new YT.Player('youtube-player', {
+        new YT.Player('youtube-player', {
+            height: '100%',
+            width: '100%',
+            videoId: episodes[index].id,
             events: {
+                'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange
             }
         });
+    }
+
+    function onPlayerReady(event) {
+        event.target.playVideo();
     }
 
     function updateEpisodeCount() {
@@ -78,18 +85,15 @@
         const shareButton = document.getElementById('share-button');
 
         backButton.addEventListener('click', () => {
-            // 이전 페이지로 이동
             window.history.back();
         });
 
         listButton.addEventListener('click', () => {
-            // 에피소드 목록 오버레이 토글
             const episodeOverlay = document.getElementById('episode-overlay');
             episodeOverlay.style.display = episodeOverlay.style.display === 'none' ? 'block' : 'none';
         });
 
         shareButton.addEventListener('click', () => {
-            // 공유 기능 구현
             if (navigator.share) {
                 navigator.share({
                     title: '나는 너, 너는 나',
@@ -126,14 +130,20 @@
     function init() {
         createEpisodeList();
         addButtonListeners();
-        setupAutoplay();
         playEpisode(0);
-        // YouTube API 로드
+    }
+
+    // YouTube API 로드
+    function loadYouTubeAPI() {
         const tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         const firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
 
-    window.addEventListener('load', init);
+    window.onYouTubeIframeAPIReady = function() {
+        init();
+    };
+
+    loadYouTubeAPI();
 })();
