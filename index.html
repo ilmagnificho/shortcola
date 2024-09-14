@@ -2,10 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>나는 너, 너는 나</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주인님의 죽음을 위해서</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- 여기에 AdSense 코드를 붙여넣으세요 -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2021850347156633"
@@ -57,22 +55,17 @@
             cursor: pointer;
         }
         #episode-overlay {
+            display: none;
             position: fixed;
-            top: 0;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            z-index: 1000;
-        }
-        #close-overlay {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
+            height: 50%;
+            background: rgba(0,0,0,0.9);
+            z-index: 3;
+            overflow-y: auto;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
         }
         .episode-grid {
             display: grid;
@@ -81,101 +74,49 @@
             padding: 20px;
         }
         .episode-item {
-            background: #333;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .episode-item.locked {
-            opacity: 0.5;
-        }
-        #list-button {
-            position: fixed;
-            bottom: 100px; /* 버튼 위치를 위로 이동 */
-            right: 10px;
-            background: none;
-            border: none;
+            background-color: rgba(255, 215, 0, 0.2);
             color: #FFD700;
-            font-size: 24px;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
             cursor: pointer;
-            z-index: 100;
         }
-        #list-button i {
-            display: block;
-            width: 20px;
-            height: 2px;
-            background-color: #FFD700;
-            position: relative;
+        .episode-item.locked::after {
+            content: '\f023';
+            font-family: 'Font Awesome 5 Free';
+            margin-left: 5px;
         }
-        #list-button i::before,
-        #list-button i::after {
-            content: '';
-            display: block;
-            width: 20px;
-            height: 2px;
-            background-color: #FFD700;
+        #overlay-close {
             position: absolute;
-        }
-        #list-button i::before {
-            top: -6px;
-        }
-        #list-button i::after {
-            bottom: -6px;
-        }
-        #share-button svg {
-            width: 20px;
-            height: 20px;
-            fill: #FFD700;
-        }
-        #episode-count {
-            position: fixed;
             top: 10px;
             right: 10px;
-            color: #FFD700;
-            font-size: 18px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border-radius: 15px;
-        }
-        #button-container {
-            position: fixed;
-            bottom: 70px; /* 버튼 위치 조정 */
-            right: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            z-index: 100;
-        }
-        .icon-button {
             background: none;
             border: none;
             color: #FFD700;
             font-size: 24px;
             cursor: pointer;
-            padding: 5px;
-            margin-bottom: 15px; /* 버튼 간격 조정 */
         }
-        #share-button {
-            transform: rotate(-90deg);
+        #back-button, #episode-count {
+            color: #FFD700;
+            font-size: 18px;
         }
-        #share-button svg {
-            width: 24px;
-            height: 24px;
-            fill: #FFD700;
-        }
-        #list-button {
-            width: 24px;
-            height: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        #list-button span {
+        .ad-prompt, .ad-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 3px;
-            background-color: #FFD700;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .ad-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
         }
         #ad-confirm, #ad-cancel {
             margin: 10px;
@@ -190,22 +131,16 @@
 </head>
 <body>
     <div id="video-container"></div>
-    <div id="episode-count">5/10</div>
-    <div id="button-container">
-        <button id="list-button" class="icon-button">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <button id="share-button" class="icon-button">
-            <svg viewBox="0 0 24 24">
-                <path d="M21 12l-7-7v4C7 10 4 15 3 20c2.5-3.5 6-5.1 11-5.1V19l7-7z"/>
-            </svg>
-        </button>
+    <div id="top-bar">
+        <button id="back-button"><i class="fas fa-arrow-left"></i></button>
+        <div id="episode-count">1/10</div>
+    </div>
+    <div id="side-buttons">
+        <button id="list-button" class="side-button"><i class="fas fa-list"></i></button>
+        <button id="share-button" class="side-button"><i class="fas fa-share"></i></button>
     </div>
     <div id="episode-overlay">
-        <div id="close-overlay">&times;</div>
-        <div class="episode-grid"></div>
+        <!-- 에피소드 목록은 JavaScript에서 동적으로 생성됩니다 -->
     </div>
     <script src="script.js"></script>
 </body>
