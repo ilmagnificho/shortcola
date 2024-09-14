@@ -1,193 +1,76 @@
 (function() {
     const episodes = [
-        {id: 1, title: "에피소드 1", videoId: "hfqup-YNCk4", locked: false},
-        {id: 2, title: "에피소드 2", videoId: "8nGvwQ2Vteo", locked: false},
-        {id: 3, title: "에피소드 3", videoId: "trvOrFO5aUk", locked: false},
-        {id: 4, title: "에피소드 4", videoId: "htw1TsXlZ6E", locked: false},
-        {id: 5, title: "에피소드 5", videoId: "r1N89xFzSsA", locked: false},
-        {id: 6, title: "에피소드 6", videoId: "qll4P2CdCno", locked: true},
-        {id: 7, title: "에피소드 7", videoId: "pct2Op9H7F0", locked: true},
-        {id: 8, title: "에피소드 8", videoId: "B8WjorPPg1U", locked: true},
-        {id: 9, title: "에피소드 9", videoId: "eG7YZ4XvBIQ", locked: true},
-        {id: 10, title: "에피소드 10", videoId: "IAmpmai_3yY", locked: true},
+        { id: '8nGvwQ2Vteo', title: '예고편' },
+        { id: '4zU2_2Uf4wE', title: '에피소드 1' },
+        { id: 'FFMWzJbo4kk', title: '에피소드 2' },
+        { id: 'HI6p94t5XXk', title: '에피소드 3' },
+        { id: 'aKAvgA294q4', title: '에피소드 4' },
+        { id: 'XNKaaEDbANE', title: '에피소드 5' },
+        { id: 'v-wYCAT1I_o', title: '에피소드 6' },
+        { id: 'zl_dl4p_Uwc', title: '에피소드 7' },
+        { id: 'hfqup-YNCk4', title: '에피소드 8' },
+        { id: 'JZsgy56QPSQ', title: '에피소드 9' },
+        { id: '4aBaL5TwK-8', title: '에피소드 10' },
+        { id: 'PXT5Asxqlpc', title: '에피소드 11' },
+        { id: 'MfYAD2xQAns', title: '에피소드 12' },
+        { id: '3ZpTJ5LygyI', title: '에피소드 13' },
+        { id: 'nRrQRBKiwbE', title: '에피소드 14' },
+        { id: 'nawqIEBWazU', title: '에피소드 15' }
     ];
 
-    let currentEpisode = 1;
-    let player;
+    let currentEpisode = 0;
 
-    function initializeUI() {
-        loadEpisodes();
-
-        const backButton = document.getElementById('back-button');
-        const listButton = document.getElementById('list-button');
-        const shareButton = document.getElementById('share-button');
+    function createEpisodeList() {
         const episodeOverlay = document.getElementById('episode-overlay');
+        const episodeGrid = document.createElement('div');
+        episodeGrid.className = 'episode-grid';
 
-        backButton.addEventListener('click', () => {
-            console.log('뒤로 가기');
-            history.back();
-        });
-
-        listButton.addEventListener('click', () => {
-            episodeOverlay.style.display = episodeOverlay.style.display === 'block' ? 'none' : 'block';
-        });
-
-        shareButton.addEventListener('click', () => {
-            const shareUrl = window.location.href;
-            const shareTitle = "주인님의 죽음을 위해서";
+        episodes.forEach((episode, index) => {
+            const episodeItem = document.createElement('div');
+            episodeItem.className = 'episode-item';
+            episodeItem.textContent = episode.title;
             
-            if (navigator.share) {
-                navigator.share({
-                    title: shareTitle,
-                    url: shareUrl
-                }).then(() => {
-                    console.log('공유 성공');
-                }).catch((error) => {
-                    console.log('공유 실패:', error);
-                });
-            } else {
-                prompt("이 링크를 복사하여 공유하세요:", shareUrl);
+            if (index > 5) {
+                episodeItem.classList.add('locked');
             }
-        });
-    }
 
-    function loadEpisodes() {
-        const overlay = document.getElementById('episode-overlay');
-        overlay.innerHTML = `
-            <button id="overlay-close">&times;</button>
-            <div class="episode-grid"></div>
-        `;
-        const grid = overlay.querySelector('.episode-grid');
-        episodes.forEach(ep => {
-            const item = document.createElement('div');
-            item.className = "episode-item";
-            if (ep.locked) {
-                item.classList.add('locked');
-            }
-            item.textContent = ep.id;
-            item.onclick = () => {
-                overlay.style.display = 'none';
-                playEpisode(ep.id);
-            };
-            grid.appendChild(item);
+            episodeItem.addEventListener('click', () => {
+                if (index <= 5) {
+                    playEpisode(index);
+                } else {
+                    showAdPrompt(index);
+                }
+            });
+
+            episodeGrid.appendChild(episodeItem);
         });
 
-        document.getElementById('overlay-close').addEventListener('click', () => {
-            overlay.style.display = 'none';
-        });
+        episodeOverlay.appendChild(episodeGrid);
     }
 
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('video-container', {
-            height: '100%',
-            width: '100%',
-            videoId: episodes[0].videoId,
-            playerVars: {
-                'autoplay': 1,
-                'playsinline': 1,
-                'controls': 1,
-                'loop': 0
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
+    function playEpisode(index) {
+        currentEpisode = index;
+        const videoContainer = document.getElementById('video-container');
+        videoContainer.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${episodes[index].id}" frameborder="0" allowfullscreen></iframe>`;
+        updateEpisodeCount();
     }
 
-    function onPlayerReady(event) {
-        console.log('Player is ready');
-        event.target.playVideo();
-        initializeUI();
+    function updateEpisodeCount() {
+        const episodeCount = document.getElementById('episode-count');
+        episodeCount.textContent = `${currentEpisode}/${episodes.length - 1}`;
     }
 
-    function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.ENDED) {
-            console.log('Video ended, playing next episode');
-            playNextEpisode();
-        }
+    function showAdPrompt(index) {
+        // 광고 프롬프트 로직 구현
+        // ...
     }
 
-    function playNextEpisode() {
-        const nextEpisodeId = currentEpisode + 1;
-        if (nextEpisodeId <= episodes.length) {
-            console.log('Playing next episode:', nextEpisodeId);
-            playEpisode(nextEpisodeId);
-        } else {
-            console.log("모든 에피소드를 시청했습니다.");
-        }
+    function init() {
+        createEpisodeList();
+        playEpisode(0);
+        // 기타 초기화 로직
+        // ...
     }
 
-    function playEpisode(id) {
-        console.log('Attempting to play episode:', id);
-        const episode = episodes.find(ep => ep.id === id);
-        if (episode) {
-            if (episode.locked) {
-                console.log('Episode is locked, showing ad prompt');
-                showAdPrompt(id);
-            } else {
-                console.log('Playing episode:', id);
-                player.loadVideoById(episode.videoId);
-                document.getElementById('episode-count').textContent = `${id}/10`;
-                currentEpisode = id;
-            }
-        }
-    }
-
-    function showAdPrompt(id) {
-        console.log('Showing ad prompt for episode:', id);
-        const adPrompt = document.createElement('div');
-        adPrompt.className = 'ad-prompt';
-        adPrompt.innerHTML = `
-            <p>에피소드 ${id}를 시청하려면 광고를 봐야 합니다. 광고를 보시겠습니까?</p>
-            <button id="ad-confirm">확인</button>
-            <button id="ad-cancel">취소</button>
-        `;
-        document.body.appendChild(adPrompt);
-
-        document.getElementById('ad-confirm').onclick = () => {
-            document.body.removeChild(adPrompt);
-            playAd(id);
-        };
-        document.getElementById('ad-cancel').onclick = () => {
-            document.body.removeChild(adPrompt);
-        };
-    }
-
-    function playAd(id) {
-        console.log('Playing ad for episode:', id);
-        const adOverlay = document.createElement('div');
-        adOverlay.className = 'ad-overlay';
-        adOverlay.innerHTML = `
-            <div class="ad-content">
-                <h2>광고 재생 중...</h2>
-                <p>5초 후 자동으로 닫힙니다.</p>
-            </div>
-        `;
-        document.body.appendChild(adOverlay);
-
-        setTimeout(() => {
-            document.body.removeChild(adOverlay);
-            unlockEpisode(id);
-            playEpisode(id);
-        }, 5000); // 5초 후 광고 종료
-    }
-
-    function unlockEpisode(id) {
-        console.log('Unlocking episode:', id);
-        const episode = episodes.find(ep => ep.id === id);
-        if (episode) {
-            episode.locked = false;
-        }
-    }
-
-    function loadYouTubeAPI() {
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    }
-
-    document.addEventListener('DOMContentLoaded', loadYouTubeAPI);
-    window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+    window.addEventListener('load', init);
 })();
