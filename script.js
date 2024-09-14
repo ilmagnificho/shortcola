@@ -48,7 +48,15 @@
 
     function toggleEpisodeOverlay() {
         const episodeOverlay = document.getElementById('episode-overlay');
-        episodeOverlay.style.display = episodeOverlay.style.display === 'none' ? 'block' : 'none';
+        const buttonContainer = document.getElementById('button-container');
+        
+        if (episodeOverlay.style.display === 'none' || episodeOverlay.style.display === '') {
+            episodeOverlay.style.display = 'block';
+            buttonContainer.style.display = 'none';
+        } else {
+            episodeOverlay.style.display = 'none';
+            buttonContainer.style.display = 'flex';
+        }
     }
 
     function playEpisode(index) {
@@ -74,7 +82,7 @@
 
     function updateEpisodeCount() {
         const episodeCount = document.getElementById('episode-count');
-        episodeCount.textContent = `${currentEpisode}/${episodes.length - 1}`;
+        episodeCount.textContent = `${currentEpisode + 1}/${episodes.length}`;
     }
 
     function showAdPrompt(index) {
@@ -84,17 +92,36 @@
 
     function addButtonListeners() {
         const listButton = document.getElementById('list-button');
+        const shareButton = document.getElementById('share-button');
         const closeOverlayButton = document.getElementById('close-overlay');
 
         if (listButton) {
             listButton.addEventListener('click', toggleEpisodeOverlay);
         }
 
+        if (shareButton) {
+            shareButton.addEventListener('click', shareContent);
+        }
+
         if (closeOverlayButton) {
             closeOverlayButton.addEventListener('click', toggleEpisodeOverlay);
         }
+    }
 
-        // ... 기존 코드 ...
+    function shareContent() {
+        if (navigator.share) {
+            navigator.share({
+                title: '나는 너, 너는 나',
+                text: `에피소드 ${currentEpisode + 1} 보기`,
+                url: window.location.href
+            }).then(() => {
+                console.log('공유 성공');
+            }).catch((error) => {
+                console.log('공유 실패:', error);
+            });
+        } else {
+            alert('공유 기능을 지원하지 않는 브라우저입니다.');
+        }
     }
 
     function setupAutoplay() {
@@ -118,6 +145,7 @@
         createEpisodeList();
         addButtonListeners();
         playEpisode(0);
+        updateEpisodeCount();
 
         // 모바일에서 더블탭 줌 방지
         document.addEventListener('touchstart', function(event) {
@@ -147,4 +175,15 @@
     };
 
     loadYouTubeAPI();
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.icon-button');
+        
+        buttons.forEach(button => {
+            button.addEventListener('touchstart', function(e) {
+                e.preventDefault(); // 기본 동작 방지
+                this.click(); // 클릭 이벤트 강제 실행
+            });
+        });
+    });
 })();
