@@ -93,8 +93,8 @@
         }
         #list-button {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 60px;
+            right: 10px;
             background: none;
             border: none;
             color: #FFD700;
@@ -103,9 +103,25 @@
             z-index: 100;
         }
         #list-button i {
-            transform: rotate(-90deg);
+            display: block;
+            width: 30px;
+            height: 30px;
+            background-color: #FFD700;
+            border-radius: 5px;
         }
-        #back-button, #episode-count {
+        #list-button i::before,
+        #list-button i::after {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 2px;
+            background-color: #000;
+            margin: 5px auto;
+        }
+        #episode-count {
+            position: fixed;
+            top: 10px;
+            right: 10px;
             color: #FFD700;
             font-size: 18px;
         }
@@ -140,14 +156,8 @@
 </head>
 <body>
     <div id="video-container"></div>
-    <div id="top-bar">
-        <button id="back-button"><i class="fas fa-arrow-left"></i></button>
-        <div id="episode-count">0/15</div>
-    </div>
-    <button id="list-button"><i class="fas fa-chevron-up"></i></button>
-    <div id="side-buttons">
-        <button id="share-button" class="side-button"><i class="fas fa-share"></i></button>
-    </div>
+    <div id="episode-count">5/10</div>
+    <button id="list-button"><i></i></button>
     <div id="episode-overlay">
         <div id="close-overlay">&times;</div>
         <div class="episode-grid"></div>
