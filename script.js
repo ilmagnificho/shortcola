@@ -83,41 +83,13 @@
     }
 
     function addButtonListeners() {
-        const backButton = document.getElementById('back-button');
         const listButton = document.getElementById('list-button');
-        const shareButton = document.getElementById('share-button');
         const closeOverlayButton = document.getElementById('close-overlay');
-
-        if (backButton) {
-            backButton.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                window.history.back();
-            });
-        }
 
         if (listButton) {
             listButton.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 toggleEpisodeOverlay();
-            });
-        }
-
-        if (shareButton) {
-            shareButton.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                if (navigator.share) {
-                    navigator.share({
-                        title: '나는 너, 너는 나',
-                        text: `에피소드 ${currentEpisode} 보기`,
-                        url: window.location.href
-                    }).then(() => {
-                        console.log('공유 성공');
-                    }).catch((error) => {
-                        console.log('공유 실패:', error);
-                    });
-                } else {
-                    alert('공유 기능을 지원하지 않는 브라우저입니다.');
-                }
             });
         }
 
@@ -127,6 +99,8 @@
                 toggleEpisodeOverlay();
             });
         }
+
+        // ... 기존 코드 ...
     }
 
     function setupAutoplay() {
