@@ -51,8 +51,15 @@
     function playEpisode(index) {
         currentEpisode = index;
         const videoContainer = document.getElementById('video-container');
-        videoContainer.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${episodes[index].id}" frameborder="0" allowfullscreen></iframe>`;
+        videoContainer.innerHTML = `<iframe id="youtube-player" width="100%" height="100%" src="https://www.youtube.com/embed/${episodes[index].id}?enablejsapi=1" frameborder="0" allowfullscreen></iframe>`;
         updateEpisodeCount();
+
+        // YouTube API를 사용하여 자동 재생 설정
+        const player = new YT.Player('youtube-player', {
+            events: {
+                'onStateChange': onPlayerStateChange
+            }
+        });
     }
 
     function updateEpisodeCount() {
@@ -65,11 +72,67 @@
         // ...
     }
 
+    function addButtonListeners() {
+        const backButton = document.getElementById('back-button');
+        const listButton = document.getElementById('list-button');
+        const shareButton = document.getElementById('share-button');
+
+        backButton.addEventListener('click', () => {
+            // 이전 페이지로 이동
+            window.history.back();
+        });
+
+        listButton.addEventListener('click', () => {
+            // 에피소드 목록 오버레이 토글
+            const episodeOverlay = document.getElementById('episode-overlay');
+            episodeOverlay.style.display = episodeOverlay.style.display === 'none' ? 'block' : 'none';
+        });
+
+        shareButton.addEventListener('click', () => {
+            // 공유 기능 구현
+            if (navigator.share) {
+                navigator.share({
+                    title: '나는 너, 너는 나',
+                    text: `에피소드 ${currentEpisode} 보기`,
+                    url: window.location.href
+                }).then(() => {
+                    console.log('공유 성공');
+                }).catch((error) => {
+                    console.log('공유 실패:', error);
+                });
+            } else {
+                alert('공유 기능을 지원하지 않는 브라우저입니다.');
+            }
+        });
+    }
+
+    function setupAutoplay() {
+        const videoContainer = document.getElementById('video-container');
+        videoContainer.addEventListener('ended', () => {
+            if (currentEpisode < episodes.length - 1) {
+                playEpisode(currentEpisode + 1);
+            }
+        });
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.ENDED) {
+            if (currentEpisode < episodes.length - 1) {
+                playEpisode(currentEpisode + 1);
+            }
+        }
+    }
+
     function init() {
         createEpisodeList();
+        addButtonListeners();
+        setupAutoplay();
         playEpisode(0);
-        // 기타 초기화 로직
-        // ...
+        // YouTube API 로드
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
 
     window.addEventListener('load', init);
