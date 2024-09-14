@@ -86,18 +86,25 @@
             padding: 10px;
             text-align: center;
             cursor: pointer;
+            border-radius: 5px;
         }
         .episode-item.locked {
             opacity: 0.5;
         }
-        #overlay-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
+        #list-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
             color: #FFD700;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
             font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
         }
         #back-button, #episode-count {
@@ -139,8 +146,8 @@
         <button id="back-button"><i class="fas fa-arrow-left"></i></button>
         <div id="episode-count">0/15</div>
     </div>
+    <button id="list-button"><i class="fas fa-list"></i></button>
     <div id="side-buttons">
-        <button id="list-button" class="side-button"><i class="fas fa-list"></i></button>
         <button id="share-button" class="side-button"><i class="fas fa-share"></i></button>
     </div>
     <div id="episode-overlay">
